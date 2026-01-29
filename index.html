@@ -3,111 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <title>KUTLAKSTER</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root{
-  --purple:#a400ff;
-  --green:#00ff9d;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-
-body{
-  background:radial-gradient(circle at top,#1c0030,#050008);
-  color:white;
-  overflow:hidden;
+body {
+  background: radial-gradient(circle at top, #12001f, #05010a);
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
 /* ЗІРКИ */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:-1;
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
-/* ЛЕЙАУТ */
-.main{
-  height:100vh;
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  align-items:center;
-  padding:40px;
+/* МЕНЮ ЗЛІВА */
+.menu {
+  position: fixed;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-/* КНОПКИ */
-.buttons{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
+.btn {
+  display: block;
+  margin: 15px 0;
+  padding: 14px 28px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  background: linear-gradient(45deg, #8a2be2, #00ff88);
+  box-shadow: 0 0 20px #8a2be2;
+  transition: 0.3s;
 }
 
-.btn{
-  padding:18px;
-  border-radius:18px;
-  text-align:center;
-  font-size:18px;
-  font-weight:bold;
-  cursor:pointer;
-  background:linear-gradient(135deg,var(--purple),var(--green));
-  box-shadow:0 0 30px rgba(164,0,255,.6);
-  transition:.3s;
-  user-select:none;
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 35px #00ff88;
 }
 
-.btn:hover{
-  transform:scale(1.1);
-  box-shadow:0 0 60px rgba(0,255,157,.9);
+/* КОНТЕНТ СПРАВА */
+.content {
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
 }
 
-/* ЦЕНТР */
-.center{
-  text-align:center;
+.avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 4px solid #00ff88;
+  box-shadow: 0 0 30px #8a2be2;
 }
 
-.center h1{
-  font-size:64px;
-  text-shadow:0 0 40px var(--purple);
+h1 {
+  margin-top: 20px;
+  font-size: 36px;
+  color: #c77dff;
 }
 
-/* СТАТИСТИКА */
-.stats{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-  align-items:flex-end;
-}
-
-.card{
-  padding:18px 24px;
-  border-radius:18px;
-  background:rgba(255,255,255,.06);
-  box-shadow:0 0 30px rgba(0,255,157,.4);
-}
-
-/* КНОПКА МУЗИКИ */
-.music{
-  position:fixed;
-  bottom:80px;
-  right:30px;
-  padding:16px 20px;
-  border:none;
-  border-radius:16px;
-  background:var(--green);
-  color:black;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 0 30px rgba(0,255,157,.9);
-}
-
-/* НЕОНОВА ПОЛОСА ЗНИЗУ */
-.footer-glow{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:8px;
-  background:linear-gradient(90deg,var(--purple),var(--green),var(--purple));
-  box-shadow:0 0 40px var(--green);
+/* НИЖНЯ СМУГА */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #8a2be2, #00ff88);
+  box-shadow: 0 0 25px #00ff88;
 }
 </style>
 </head>
@@ -116,86 +88,75 @@ canvas{
 
 <canvas id="stars"></canvas>
 
-<div class="main">
-
-  <!-- ЛІВО -->
-  <div class="buttons">
-    <div class="btn" onclick="openLink('https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw')">▶ YouTube</div>
-    <div class="btn" onclick="openLink('https://www.twitch.tv/kutlakster1')">🎮 Twitch</div>
-    <div class="btn" onclick="openLink('https://discord.gg/8ccpg7c23F')">💬 Discord</div>
-  </div>
-
-  <!-- ЦЕНТР -->
-  <div class="center">
-    <h1>KUTLAKSTER</h1>
-    <p>Gamer • Streamer • Creator</p>
-  </div>
-
-  <!-- ПРАВО -->
-  <div class="stats">
-    <div class="card">🟢 Discord ONLINE</div>
-    <div class="card">👥 Учасники: <span id="m">128</span></div>
-    <div class="card">⭐ YouTube: <span id="s">1240</span></div>
-  </div>
-
+<div class="menu">
+  <a class="btn" href="https://discord.gg/8ccpg7c23F" target="_blank">Discord</a>
+  <a class="btn" href="https://www.twitch.tv/kutlakster1" target="_blank">Twitch</a>
+  <a class="btn" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">YouTube</a>
+  <a class="btn" onclick="toggleMusic()">🎵 Music</a>
 </div>
 
-<button class="music" onclick="playMusic()">▶ PLAY MUSIC</button>
+<div class="content">
+  <img class="avatar" src="https://yt3.googleusercontent.com/ytc/AIdro_k" alt="avatar">
+  <h1>KUTLAKSTER</h1>
+</div>
 
-<div class="footer-glow"></div>
+<div class="footer"></div>
 
-<audio id="music" preload="auto">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_98d1bcbf12.mp3">
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_946bfa3e7e.mp3">
 </audio>
 
 <script>
-/* ПОСИЛАННЯ */
-function openLink(url){window.open(url,"_blank")}
-
 /* МУЗИКА */
-function playMusic(){
-  const m=document.getElementById("music");
-  m.volume=0.5;
-  m.play();
+const music = document.getElementById("music");
+let playing = false;
+function toggleMusic() {
+  if (!playing) {
+    music.play();
+    playing = true;
+  } else {
+    music.pause();
+    playing = false;
+  }
 }
 
-/* ФЕЙК ЛІЧИЛЬНИКИ */
-setInterval(()=>{
-  m.innerText=120+Math.floor(Math.random()*10);
-  s.innerText=1200+Math.floor(Math.random()*40);
-},3000);
+/* ЗІРКИ + ПАРАЛАКС */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+let stars = [];
+let mouseX = 0, mouseY = 0;
 
-/* ЗІРКИ + КУРСОР */
-const c=stars,ctx=c.getContext("2d");
-let mx=0,my=0;
-function resize(){c.width=innerWidth;c.height=innerHeight}
-resize();onresize=resize;
+function resize() {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+}
+resize();
+addEventListener("resize", resize);
 
-let starsArr=[...Array(120)].map(()=>({
-  x:Math.random()*c.width,
-  y:Math.random()*c.height,
-  dx:Math.random()*0.5,
-  dy:Math.random()*0.5
-}));
-
-onmousemove=e=>{mx=e.clientX;my=e.clientY}
-ontouchmove=e=>{mx=e.touches[0].clientX;my=e.touches[0].clientY}
-
-function draw(){
-  ctx.clearRect(0,0,c.width,c.height);
-  ctx.fillStyle="#00ff9d";
-  starsArr.forEach(s=>{
-    s.x+=s.dx+(mx-c.width/2)*0.00002;
-    s.y+=s.dy+(my-c.height/2)*0.00002;
-    if(s.x<0||s.x>c.width||s.y<0||s.y>c.height){
-      s.x=Math.random()*c.width;
-      s.y=Math.random()*c.height;
-    }
-    ctx.fillRect(s.x,s.y,2,2);
+for (let i = 0; i < 120; i++) {
+  stars.push({
+    x: Math.random() * innerWidth,
+    y: Math.random() * innerHeight,
+    r: Math.random() * 2 + 1
   });
-  requestAnimationFrame(draw);
 }
-draw();
+
+addEventListener("mousemove", e => {
+  mouseX = (e.clientX - innerWidth / 2) * 0.02;
+  mouseY = (e.clientY - innerHeight / 2) * 0.02;
+});
+
+function animate() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "white";
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x + mouseX, s.y + mouseY, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  requestAnimationFrame(animate);
+}
+animate();
 </script>
 
 </body>
