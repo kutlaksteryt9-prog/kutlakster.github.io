@@ -6,80 +6,115 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  background: radial-gradient(circle at top, #12001f, #05010a);
-  color: white;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Arial, sans-serif;
+  background:#05010a;
+  color:white;
+  overflow:hidden;
 }
 
-/* ЗІРКИ */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
+/* ===== ЗІРКИ ===== */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:-1;
 }
 
-/* МЕНЮ ЗЛІВА */
-.menu {
-  position: fixed;
-  left: 40px;
-  top: 50%;
-  transform: translateY(-50%);
+/* ===== НЕОНОВИЙ GLASS ===== */
+.glass{
+  background:rgba(20,10,40,.45);
+  backdrop-filter: blur(14px);
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 0 30px #8a2be2;
 }
 
-.btn {
-  display: block;
-  margin: 15px 0;
-  padding: 14px 28px;
-  border-radius: 14px;
-  text-decoration: none;
-  color: white;
-  font-size: 18px;
-  background: linear-gradient(45deg, #8a2be2, #00ff88);
-  box-shadow: 0 0 20px #8a2be2;
-  transition: 0.3s;
+/* ===== МЕНЮ ===== */
+.menu{
+  position:fixed;
+  left:40px;
+  top:50%;
+  transform:translateY(-50%);
+}
+.btn{
+  display:block;
+  margin:14px 0;
+  padding:14px 28px;
+  border-radius:14px;
+  text-decoration:none;
+  color:white;
+  background:linear-gradient(45deg,#8a2be2,#00ff88);
+  box-shadow:0 0 25px #8a2be2;
+  transition:.3s;
+}
+.btn:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 40px #00ff88;
 }
 
-.btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 35px #00ff88;
+/* ===== МОБІЛЬНЕ МЕНЮ ===== */
+.burger{
+  display:none;
+  position:fixed;
+  top:20px;
+  left:20px;
+  font-size:28px;
+  z-index:5;
+  cursor:pointer;
+}
+@media(max-width:800px){
+  .menu{
+    left:20px;
+    top:80px;
+    transform:none;
+    display:none;
+  }
+  .menu.active{display:block}
+  .burger{display:block}
 }
 
-/* КОНТЕНТ СПРАВА */
-.content {
-  position: absolute;
-  right: 8%;
-  top: 50%;
-  transform: translateY(-50%);
-  text-align: center;
+/* ===== КОНТЕНТ ===== */
+.content{
+  position:absolute;
+  right:8%;
+  top:50%;
+  transform:translateY(-50%);
+  text-align:center;
+}
+.avatar{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  border:4px solid #00ff88;
+  box-shadow:0 0 40px #8a2be2;
+}
+h1{
+  margin-top:20px;
+  font-size:36px;
+  color:#c77dff;
+  text-shadow:0 0 20px #8a2be2;
 }
 
-.avatar {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  border: 4px solid #00ff88;
-  box-shadow: 0 0 30px #8a2be2;
+/* ===== ЗМІЙКА ===== */
+#snakeBox{
+  position:fixed;
+  right:40px;
+  bottom:40px;
+  padding:15px;
+}
+#snake{
+  background:#000;
+  border:2px solid #00ff88;
 }
 
-h1 {
-  margin-top: 20px;
-  font-size: 36px;
-  color: #c77dff;
-}
-
-/* НИЖНЯ СМУГА */
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 6px;
-  background: linear-gradient(90deg, #8a2be2, #00ff88);
-  box-shadow: 0 0 25px #00ff88;
+/* ===== НИЗ ===== */
+.footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:6px;
+  background:linear-gradient(90deg,#8a2be2,#00ff88);
+  box-shadow:0 0 30px #00ff88;
 }
 </style>
 </head>
@@ -88,16 +123,22 @@ h1 {
 
 <canvas id="stars"></canvas>
 
-<div class="menu">
+<div class="burger" onclick="toggleMenu()">☰</div>
+
+<div class="menu glass" id="menu">
   <a class="btn" href="https://discord.gg/8ccpg7c23F" target="_blank">Discord</a>
   <a class="btn" href="https://www.twitch.tv/kutlakster1" target="_blank">Twitch</a>
   <a class="btn" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">YouTube</a>
   <a class="btn" onclick="toggleMusic()">🎵 Music</a>
 </div>
 
-<div class="content">
-  <img class="avatar" src="https://yt3.googleusercontent.com/ytc/AIdro_k" alt="avatar">
+<div class="content glass">
+  <img class="avatar" src="https://yt3.googleusercontent.com/ytc/AIdro_k" alt="">
   <h1>KUTLAKSTER</h1>
+</div>
+
+<div id="snakeBox" class="glass">
+  <canvas id="snake" width="220" height="220"></canvas>
 </div>
 
 <div class="footer"></div>
@@ -107,56 +148,64 @@ h1 {
 </audio>
 
 <script>
-/* МУЗИКА */
-const music = document.getElementById("music");
-let playing = false;
-function toggleMusic() {
-  if (!playing) {
-    music.play();
-    playing = true;
-  } else {
-    music.pause();
-    playing = false;
-  }
+/* ===== МЕНЮ ===== */
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("active");
 }
 
-/* ЗІРКИ + ПАРАЛАКС */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-let stars = [];
-let mouseX = 0, mouseY = 0;
-
-function resize() {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-}
-resize();
-addEventListener("resize", resize);
-
-for (let i = 0; i < 120; i++) {
-  stars.push({
-    x: Math.random() * innerWidth,
-    y: Math.random() * innerHeight,
-    r: Math.random() * 2 + 1
-  });
+/* ===== МУЗИКА ===== */
+const music=document.getElementById("music");
+let play=false;
+function toggleMusic(){
+  play?music.pause():music.play();
+  play=!play;
 }
 
-addEventListener("mousemove", e => {
-  mouseX = (e.clientX - innerWidth / 2) * 0.02;
-  mouseY = (e.clientY - innerHeight / 2) * 0.02;
+/* ===== ЗІРКИ + ПАРАЛАКС ===== */
+const c=document.getElementById("stars"),x=c.getContext("2d");
+let W,H,stars=[],mx=0,my=0;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+resize();addEventListener("resize",resize);
+for(let i=0;i<140;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2});
+addEventListener("mousemove",e=>{
+  mx=(e.clientX-W/2)*0.03;
+  my=(e.clientY-H/2)*0.03;
 });
-
-function animate() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = "white";
-  stars.forEach(s => {
-    ctx.beginPath();
-    ctx.arc(s.x + mouseX, s.y + mouseY, s.r, 0, Math.PI * 2);
-    ctx.fill();
+(function anim(){
+  x.clearRect(0,0,W,H);
+  x.fillStyle="white";
+  stars.forEach(s=>{
+    x.beginPath();
+    x.arc(s.x+mx,s.y+my,s.r,0,Math.PI*2);
+    x.fill();
   });
-  requestAnimationFrame(animate);
+  requestAnimationFrame(anim);
+})();
+
+/* ===== ЗМІЙКА ===== */
+const sc=document.getElementById("snake"),s=sc.getContext("2d");
+let snake=[{x:100,y:100}],dx=20,dy=0,food={x:60,y:60};
+function game(){
+  s.fillStyle="#000";s.fillRect(0,0,220,220);
+  s.fillStyle="#00ff88";
+  snake.forEach(p=>s.fillRect(p.x,p.y,18,18));
+  s.fillStyle="#8a2be2";s.fillRect(food.x,food.y,18,18);
+  const h={x:snake[0].x+dx,y:snake[0].y+dy};
+  if(h.x==food.x&&h.y==food.y){
+    food={x:Math.floor(Math.random()*11)*20,y:Math.floor(Math.random()*11)*20};
+  }else snake.pop();
+  if(h.x<0||h.y<0||h.x>=220||h.y>=220||snake.some(p=>p.x==h.x&&p.y==h.y)){
+    snake=[{x:100,y:100}];dx=20;dy=0;
+  }
+  snake.unshift(h);
 }
-animate();
+setInterval(game,200);
+addEventListener("keydown",e=>{
+  if(e.key=="ArrowUp"){dx=0;dy=-20}
+  if(e.key=="ArrowDown"){dx=0;dy=20}
+  if(e.key=="ArrowLeft"){dx=-20;dy=0}
+  if(e.key=="ArrowRight"){dx=20;dy=0}
+});
 </script>
 
 </body>
