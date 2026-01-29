@@ -39,6 +39,11 @@ canvas {
   text-shadow: 0 0 25px #b26cff;
 }
 
+.header p {
+  color: #6cff9c;
+  margin-top: 8px;
+}
+
 /* ===== MENU BUTTON ===== */
 .menu-btn {
   position: fixed;
@@ -53,6 +58,7 @@ canvas {
   cursor: pointer;
   backdrop-filter: blur(10px);
   transition: 0.3s;
+  z-index: 10;
 }
 
 .menu-btn:hover {
@@ -60,18 +66,19 @@ canvas {
   transform: scale(1.05);
 }
 
-/* ===== SIDE MENU ===== */
+/* ===== SIDE MENU (BIO ONLY) ===== */
 .menu {
   position: fixed;
   top: 0;
   left: -320px;
   width: 300px;
   height: 100%;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(14px);
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(16px);
   border-right: 1px solid rgba(178,108,255,0.3);
   padding: 30px;
   transition: 0.4s;
+  z-index: 9;
 }
 
 .menu.active {
@@ -85,7 +92,35 @@ canvas {
 
 .menu p {
   color: #ccc;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+/* ===== MAIN BUTTONS ===== */
+.links {
+  position: fixed;
+  left: 30px;
+  bottom: 40px;
+  width: 240px;
+}
+
+.links a {
+  display: block;
+  margin-bottom: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(178,108,255,0.3);
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+
+.links a:hover {
+  box-shadow: 0 0 22px #b26cff;
+  transform: scale(1.06);
 }
 </style>
 </head>
@@ -94,20 +129,31 @@ canvas {
 
 <canvas id="stars"></canvas>
 
+<!-- HEADER -->
 <div class="header">
   <h1>KUTLAKSTER</h1>
+  <p>Neon • Gaming • Community</p>
 </div>
 
+<!-- MENU BUTTON -->
 <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
 
+<!-- BIO MENU -->
 <div class="menu" id="menu">
   <h2>My Bio</h2>
   <p>
     🎮 Gamer & streamer<br>
-    💜 Neon style lover<br>
-    🚀 Building KUT community<br>
-    🔥 GitHub Pages project
+    💜 Люблю неон і мінімалізм<br>
+    🚀 Розвиваю KUT community<br>
+    ⚡ Проєкт на GitHub Pages
   </p>
+</div>
+
+<!-- MAIN LINKS -->
+<div class="links">
+  <a href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">▶ YouTube</a>
+  <a href="https://discord.gg/8ccpg7c23F" target="_blank">💬 Discord</a>
+  <a href="https://www.twitch.tv/kutlakster1" target="_blank">🎮 Twitch</a>
 </div>
 
 <script>
