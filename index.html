@@ -20,14 +20,14 @@ body {
   overflow: hidden;
 }
 
-/* === STAR BACKGROUND === */
+/* === STARS === */
 canvas {
   position: fixed;
   inset: 0;
   z-index: -1;
 }
 
-/* === CONTENT === */
+/* === CENTER === */
 .container {
   height: 100%;
   display: flex;
@@ -41,12 +41,12 @@ canvas {
   text-align: center;
 }
 
-/* === TITLE === */
+/* === TEXT === */
 h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+  font-size: 2.6rem;
   color: #b26cff;
-  text-shadow: 0 0 15px #b26cff;
+  text-shadow: 0 0 18px #b26cff;
+  margin-bottom: 8px;
 }
 
 .subtitle {
@@ -55,42 +55,47 @@ h1 {
 }
 
 /* === BUTTONS === */
-.links a {
+button, a {
+  width: 100%;
   display: block;
   margin: 12px 0;
   padding: 14px;
-  border-radius: 12px;
-  text-decoration: none;
+  border-radius: 14px;
   font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
   color: #fff;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
   transition: 0.3s;
 }
 
-.links a:hover {
-  background: rgba(178,108,255,0.25);
-  box-shadow: 0 0 15px #b26cff;
+button:hover, a:hover {
+  box-shadow: 0 0 20px #b26cff;
   transform: scale(1.05);
 }
 
-/* === STATUS === */
-.status {
-  margin-top: 25px;
-  font-size: 0.95rem;
-  color: #aaa;
+/* === BIO MENU === */
+.bio {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(178,108,255,0.3);
+  display: none;
+  animation: fade 0.4s ease;
 }
 
-.status span {
-  display: block;
-  margin-top: 6px;
-  color: #6cff9c;
+.bio p {
+  color: #ccc;
+  line-height: 1.5;
 }
 
-/* === MOBILE === */
-@media (max-width: 480px) {
-  h1 { font-size: 2rem; }
+@keyframes fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -102,47 +107,10 @@ h1 {
 <div class="container">
   <div class="panel">
     <h1>KUTLAKSTER</h1>
-    <div class="subtitle">Gaming • Streams • Community</div>
+    <div class="subtitle">Neon • Gaming • Community</div>
 
-    <div class="links">
-      <a href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">▶ YouTube</a>
-      <a href="https://discord.gg/8ccpg7c23F" target="_blank">💬 Discord</a>
-      <a href="https://www.twitch.tv/kutlakster1" target="_blank">🎮 Twitch</a>
-    </div>
+    <button onclick="toggleBio()">📂 My Bio</button>
 
-    <div class="status">
-      <span>🔴 Discord: зараз онлайн</span>
-      <span>▶ YouTube: активний канал</span>
-      <span>🎮 Twitch: стріми регулярно</span>
-    </div>
-  </div>
-</div>
-
-<script>
-const canvas = document.getElementById('stars');
-const ctx = canvas.getContext('2d');
-
-let w, h;
-function resize() {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
-
-let mouse = { x: w / 2, y: h / 2 };
-
-window.addEventListener('mousemove', e => {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
-});
-
-const stars = Array.from({ length: 120 }, () => ({
-  x: Math.random() * w,
-  y: Math.random() * h,
-  r: Math.random() * 1.5 + 0.5,
-  dx: (Math.random() - 0.5) * 0.2,
-  dy: (Math.random() - 0.5) * 0.2
-}));
-
-func
+    <div class="bio" id="bio">
+      <p>
+        🎮 Gamer & streamer<
