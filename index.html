@@ -20,14 +20,14 @@ body {
   overflow: hidden;
 }
 
-/* === STARS === */
+/* ===== STARS ===== */
 canvas {
   position: fixed;
   inset: 0;
   z-index: -1;
 }
 
-/* === CENTER === */
+/* ===== LAYOUT ===== */
 .container {
   height: 100%;
   display: flex;
@@ -36,28 +36,26 @@ canvas {
 }
 
 .panel {
-  width: 90%;
-  max-width: 420px;
+  width: 360px;
   text-align: center;
 }
 
-/* === TEXT === */
+/* ===== TEXT ===== */
 h1 {
   font-size: 2.6rem;
   color: #b26cff;
   text-shadow: 0 0 18px #b26cff;
-  margin-bottom: 8px;
 }
 
 .subtitle {
   color: #6cff9c;
-  margin-bottom: 25px;
+  margin: 10px 0 25px;
 }
 
-/* === BUTTONS === */
-button, a {
-  width: 100%;
+/* ===== BUTTONS ===== */
+.btn {
   display: block;
+  width: 100%;
   margin: 12px 0;
   padding: 14px;
   border-radius: 14px;
@@ -67,35 +65,29 @@ button, a {
   cursor: pointer;
   text-decoration: none;
   color: #fff;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.07);
   backdrop-filter: blur(10px);
   transition: 0.3s;
 }
 
-button:hover, a:hover {
+.btn:hover {
   box-shadow: 0 0 20px #b26cff;
   transform: scale(1.05);
 }
 
-/* === BIO MENU === */
+/* ===== BIO ===== */
 .bio {
-  margin-top: 18px;
+  margin: 15px 0;
   padding: 16px;
   border-radius: 16px;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.45);
   border: 1px solid rgba(178,108,255,0.3);
   display: none;
-  animation: fade 0.4s ease;
 }
 
 .bio p {
   color: #ccc;
   line-height: 1.5;
-}
-
-@keyframes fade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -106,11 +98,75 @@ button:hover, a:hover {
 
 <div class="container">
   <div class="panel">
+
     <h1>KUTLAKSTER</h1>
     <div class="subtitle">Neon • Gaming • Community</div>
 
-    <button onclick="toggleBio()">📂 My Bio</button>
+    <!-- MY BIO BUTTON -->
+    <button class="btn" onclick="toggleBio()">📂 My Bio</button>
 
+    <!-- BIO PANEL -->
     <div class="bio" id="bio">
       <p>
-        🎮 Gamer & streamer<
+        🎮 Gamer & streamer<br>
+        💜 Neon style enjoyer<br>
+        🚀 KUT community<br>
+        🔥 GitHub Pages
+      </p>
+    </div>
+
+    <!-- LINKS -->
+    <a class="btn" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">▶ YouTube</a>
+    <a class="btn" href="https://discord.gg/8ccpg7c23F" target="_blank">💬 Discord</a>
+    <a class="btn" href="https://www.twitch.tv/kutlakster1" target="_blank">🎮 Twitch</a>
+
+  </div>
+</div>
+
+<script>
+function toggleBio() {
+  const bio = document.getElementById('bio');
+  bio.style.display = (bio.style.display === 'block') ? 'none' : 'block';
+}
+
+/* ===== STARS ===== */
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+}
+resize();
+addEventListener('resize', resize);
+
+const stars = Array.from({ length: 130 }, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  r: Math.random() * 1.4 + 0.5,
+  s: Math.random() * 0.4 + 0.1
+}));
+
+function animate() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  for (const s of stars) {
+    s.y += s.s;
+    if (s.y > canvas.height) {
+      s.y = 0;
+      s.x = Math.random() * canvas.width;
+    }
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = '#b26cff';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#6cff9c';
+    ctx.fill();
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
