@@ -5,133 +5,176 @@
 <title>KUTLAKSTER</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+:root{
+  --purple:#a400ff;
+  --green:#00ff9d;
 }
 
-body {
-  background: radial-gradient(circle at top, #2a003d, #050008);
-  color: white;
-  height: 100vh;
-  overflow: hidden;
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+body{
+  background:radial-gradient(circle at top,#1c0030,#050008);
+  color:white;
+  overflow:hidden;
 }
 
-/* Анімований фон */
-.bg {
-  position: fixed;
-  width: 200%;
-  height: 200%;
-  background:
-    repeating-linear-gradient(
-      45deg,
-      rgba(160,0,255,0.05),
-      rgba(0,255,170,0.05) 20px
-    );
-  animation: movebg 20s linear infinite;
-  z-index: -1;
+/* НЕОНОВІ ЧАСТИНКИ */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:-1;
 }
 
-@keyframes movebg {
-  from { transform: translate(0,0); }
-  to { transform: translate(-200px,-200px); }
+/* МЕНЮ */
+nav{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  padding:20px;
 }
 
-/* Меню */
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 20px;
+nav a{
+  color:white;
+  text-decoration:none;
+  padding:12px 20px;
+  border-radius:14px;
+  background:linear-gradient(45deg,var(--purple),var(--green));
+  box-shadow:0 0 20px rgba(164,0,255,.6);
+  transition:.3s;
 }
 
-nav a {
-  text-decoration: none;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 12px;
-  background: linear-gradient(45deg, #8a2be2, #00ff99);
-  box-shadow: 0 0 15px rgba(0,255,170,0.4);
-  transition: 0.3s;
+nav a:hover{
+  transform:scale(1.15);
 }
 
-nav a:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 30px rgba(180,80,255,0.8);
+/* КОНТЕНТ */
+.main{
+  height:calc(100vh - 90px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
-/* Контент */
-.main {
-  height: calc(100vh - 80px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+h1{
+  font-size:60px;
+  text-shadow:0 0 30px var(--purple);
 }
 
-h1 {
-  font-size: 60px;
-  text-shadow: 0 0 30px #a855f7;
+.stats{
+  display:flex;
+  gap:20px;
+  margin-top:30px;
 }
 
-p {
-  opacity: 0.85;
-  margin: 10px 0 30px;
+.card{
+  padding:18px 24px;
+  border-radius:16px;
+  background:rgba(255,255,255,.05);
+  box-shadow:0 0 25px rgba(0,255,157,.4);
 }
 
-/* Кнопка музики */
-.music-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #00ff99;
-  color: black;
-  border: none;
-  padding: 14px 18px;
-  border-radius: 50%;
-  font-size: 18px;
-  cursor: pointer;
-  box-shadow: 0 0 20px rgba(0,255,170,0.7);
+/* МУЗИКА */
+.music{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  border:none;
+  background:var(--green);
+  padding:14px;
+  border-radius:50%;
+  font-size:18px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
+<canvas id="particles"></canvas>
 
 <nav>
   <a href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">YouTube</a>
-  <a href="https://twitch.tv/" target="_blank">Twitch</a>
-  <a href="https://discord.gg/" target="_blank">Discord</a>
+  <a href="https://www.twitch.tv/kutlakster1" target="_blank">Twitch</a>
+  <a href="https://discord.gg/8ccpg7c23F" target="_blank">Discord</a>
 </nav>
 
 <div class="main">
   <h1>KUTLAKSTER</h1>
-  <p>Геймерський хаб • YouTube • Twitch • Discord</p>
+  <p>Gamer • Streamer • Creator</p>
+
+  <div class="stats">
+    <div class="card">
+      🟢 Discord: ONLINE<br>
+      👥 Учасники: <b id="members">128</b>
+    </div>
+    <div class="card">
+      ▶ YouTube<br>
+      ⭐ Підписники: <b id="subs">1 240</b>
+    </div>
+  </div>
 </div>
 
-<!-- Музика -->
 <audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_98d1bcbf12.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_98d1bcbf12.mp3">
 </audio>
 
-<button class="music-btn" onclick="toggleMusic()">🎵</button>
+<button class="music" onclick="toggleMusic()">🎵</button>
 
 <script>
-let playing = false;
-function toggleMusic() {
-  const m = document.getElementById("music");
-  if (playing) {
-    m.pause();
-  } else {
-    m.play();
-  }
-  playing = !playing;
+/* МУЗИКА */
+let playing=false;
+function toggleMusic(){
+  const m=document.getElementById("music");
+  playing?m.pause():m.play();
+  playing=!playing;
 }
+
+/* ФЕЙК-АНІМАЦІЯ ЛІЧИЛЬНИКІВ */
+setInterval(()=>{
+  document.getElementById("members").innerText =
+    120 + Math.floor(Math.random()*10);
+  document.getElementById("subs").innerText =
+    1200 + Math.floor(Math.random()*50);
+},3000);
+
+/* ЧАСТИНКИ */
+const c=document.getElementById("particles"),
+ctx=c.getContext("2d");
+resize();window.onresize=resize;
+let p=[];
+for(let i=0;i<80;i++)p.push(newParticle());
+
+function newParticle(){
+  return{
+    x:Math.random()*c.width,
+    y:Math.random()*c.height,
+    r:Math.random()*2+1,
+    dx:(Math.random()-.5)*0.5,
+    dy:(Math.random()-.5)*0.5
+  }
+}
+
+function resize(){
+  c.width=innerWidth;
+  c.height=innerHeight;
+}
+
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle="#00ff9d";
+  p.forEach(o=>{
+    o.x+=o.dx;o.y+=o.dy;
+    if(o.x<0||o.x>c.width||o.y<0||o.y>c.height)
+      Object.assign(o,newParticle());
+    ctx.beginPath();
+    ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
