@@ -8,28 +8,28 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   background:#05010a;
   color:white;
   overflow:hidden;
 }
 
-/* ===== ЗІРКИ ===== */
-canvas{
+/* ЗІРКИ */
+canvas#stars{
   position:fixed;
   inset:0;
   z-index:-1;
 }
 
-/* ===== НЕОНОВИЙ GLASS ===== */
+/* GLASS + НЕОН */
 .glass{
-  background:rgba(20,10,40,.45);
-  backdrop-filter: blur(14px);
+  background:rgba(20,10,40,.5);
+  backdrop-filter:blur(14px);
   border:1px solid rgba(255,255,255,.15);
   box-shadow:0 0 30px #8a2be2;
 }
 
-/* ===== МЕНЮ ===== */
+/* МЕНЮ */
 .menu{
   position:fixed;
   left:40px;
@@ -52,62 +52,61 @@ canvas{
   box-shadow:0 0 40px #00ff88;
 }
 
-/* ===== МОБІЛЬНЕ МЕНЮ ===== */
+/* МОБІЛКА */
 .burger{
   display:none;
   position:fixed;
   top:20px;
   left:20px;
   font-size:28px;
-  z-index:5;
   cursor:pointer;
+  z-index:10;
 }
 @media(max-width:800px){
-  .menu{
-    left:20px;
-    top:80px;
-    transform:none;
-    display:none;
-  }
+  .menu{display:none;left:20px;top:80px;transform:none}
   .menu.active{display:block}
   .burger{display:block}
 }
 
-/* ===== КОНТЕНТ ===== */
+/* КОНТЕНТ */
 .content{
   position:absolute;
   right:8%;
   top:50%;
   transform:translateY(-50%);
   text-align:center;
+  padding:25px;
 }
 .avatar{
   width:160px;
   height:160px;
   border-radius:50%;
   border:4px solid #00ff88;
-  box-shadow:0 0 40px #8a2be2;
+  box-shadow:0 0 35px #8a2be2;
 }
 h1{
-  margin-top:20px;
+  margin:15px 0 10px;
   font-size:36px;
   color:#c77dff;
-  text-shadow:0 0 20px #8a2be2;
+}
+.stats{
+  margin-top:10px;
+  color:#00ff88;
 }
 
-/* ===== ЗМІЙКА ===== */
+/* ЗМІЙКА */
 #snakeBox{
   position:fixed;
   right:40px;
   bottom:40px;
-  padding:15px;
+  padding:12px;
 }
 #snake{
-  background:#000;
+  background:black;
   border:2px solid #00ff88;
 }
 
-/* ===== НИЗ ===== */
+/* НИЖНЯ ЛІНІЯ */
 .footer{
   position:fixed;
   bottom:0;
@@ -129,12 +128,15 @@ h1{
   <a class="btn" href="https://discord.gg/8ccpg7c23F" target="_blank">Discord</a>
   <a class="btn" href="https://www.twitch.tv/kutlakster1" target="_blank">Twitch</a>
   <a class="btn" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">YouTube</a>
-  <a class="btn" onclick="toggleMusic()">🎵 Music</a>
 </div>
 
 <div class="content glass">
-  <img class="avatar" src="https://yt3.googleusercontent.com/ytc/AIdro_k" alt="">
+  <img class="avatar" src="https://yt3.googleusercontent.com/ytc/AIdro_k" alt="avatar">
   <h1>KUTLAKSTER</h1>
+  <div class="stats">
+    Discord: скоро онлайн<br>
+    YouTube: скоро підписники
+  </div>
 </div>
 
 <div id="snakeBox" class="glass">
@@ -143,26 +145,14 @@ h1{
 
 <div class="footer"></div>
 
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_946bfa3e7e.mp3">
-</audio>
-
 <script>
-/* ===== МЕНЮ ===== */
+/* МЕНЮ */
 function toggleMenu(){
   document.getElementById("menu").classList.toggle("active");
 }
 
-/* ===== МУЗИКА ===== */
-const music=document.getElementById("music");
-let play=false;
-function toggleMusic(){
-  play?music.pause():music.play();
-  play=!play;
-}
-
-/* ===== ЗІРКИ + ПАРАЛАКС ===== */
-const c=document.getElementById("stars"),x=c.getContext("2d");
+/* ЗІРКИ */
+const c=document.getElementById("stars"),ctx=c.getContext("2d");
 let W,H,stars=[],mx=0,my=0;
 function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
 resize();addEventListener("resize",resize);
@@ -172,17 +162,17 @@ addEventListener("mousemove",e=>{
   my=(e.clientY-H/2)*0.03;
 });
 (function anim(){
-  x.clearRect(0,0,W,H);
-  x.fillStyle="white";
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle="white";
   stars.forEach(s=>{
-    x.beginPath();
-    x.arc(s.x+mx,s.y+my,s.r,0,Math.PI*2);
-    x.fill();
+    ctx.beginPath();
+    ctx.arc(s.x+mx,s.y+my,s.r,0,Math.PI*2);
+    ctx.fill();
   });
   requestAnimationFrame(anim);
 })();
 
-/* ===== ЗМІЙКА ===== */
+/* ЗМІЙКА */
 const sc=document.getElementById("snake"),s=sc.getContext("2d");
 let snake=[{x:100,y:100}],dx=20,dy=0,food={x:60,y:60};
 function game(){
