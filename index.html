@@ -1,86 +1,136 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>KUTLAKSTER</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>KUTLAKSTER</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(120deg, #1a0026, #002b1a);
-      color: white;
-      overflow: hidden;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
 
-    .bg {
-      position: fixed;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, rgba(128,0,255,0.15), transparent 40%),
-                  radial-gradient(circle at top left, rgba(0,255,128,0.15), transparent 40%);
-      animation: moveBg 20s linear infinite;
-    }
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1a002b, #050008);
+  color: #fff;
+  overflow-x: hidden;
+}
 
-    @keyframes moveBg {
-      0% { transform: translate(0,0); }
-      50% { transform: translate(-10%, -10%); }
-      100% { transform: translate(0,0); }
-    }
+/* Анімований фон */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle, rgba(0,255,150,0.15) 1px, transparent 1px),
+    radial-gradient(circle, rgba(170,0,255,0.15) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: moveBg 20s linear infinite;
+  z-index: -1;
+}
 
-    .content {
-      position: relative;
-      z-index: 2;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
+@keyframes moveBg {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 400px 400px, -400px -400px; }
+}
 
-    h1 {
-      font-size: 3em;
-      color: #b44cff;
-      text-shadow: 0 0 20px #b44cff;
-    }
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 40px 20px;
+  text-align: center;
+  animation: fadeIn 1.2s ease;
+}
 
-    p {
-      max-width: 500px;
-      opacity: 0.9;
-    }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    .buttons a {
-      margin: 10px;
-      padding: 15px 25px;
-      border-radius: 12px;
-      text-decoration: none;
-      color: white;
-      background: linear-gradient(45deg, #8a2be2, #00ff99);
-      box-shadow: 0 0 20px rgba(0,255,150,0.4);
-      transition: 0.3s;
-    }
+/* Аватар */
+.avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 4px solid #00ff9d;
+  box-shadow: 0 0 30px #00ff9d;
+  margin-bottom: 20px;
+  animation: pulse 2.5s infinite;
+}
 
-    .buttons a:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 30px rgba(180,80,255,0.8);
-    }
-  </style>
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 25px #00ff9d; }
+  50% { box-shadow: 0 0 45px #b000ff; }
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 12px #b000ff;
+}
+
+p {
+  opacity: 0.8;
+  margin-bottom: 30px;
+}
+
+/* Кнопки */
+.link {
+  display: block;
+  padding: 15px;
+  margin: 14px 0;
+  border-radius: 14px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  background: linear-gradient(135deg, #00ff9d, #b000ff);
+  box-shadow: 0 0 25px rgba(176,0,255,0.4);
+  transition: 0.3s;
+}
+
+.link:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 45px rgba(0,255,157,0.9);
+}
+
+.footer {
+  margin-top: 40px;
+  font-size: 13px;
+  opacity: 0.5;
+}
+</style>
 </head>
+
 <body>
+<div class="container">
 
-  <div class="bg"></div>
+  <!-- АВАТАР -->
+  <img class="avatar" src="https://avatars.githubusercontent.com/u/1?v=4" alt="avatar">
 
-  <div class="content">
-    <h1>KUTLAKSTER</h1>
-    <p>Геймерський хаб • YouTube • Discord • Контент</p>
+  <h1>KUTLAKSTER</h1>
+  <p>Gamer • YouTube • Twitch</p>
 
-    <div class="buttons">
-      <a href="https://youtube.com" target="_blank">YouTube</a>
-      <a href="https://discord.gg/" target="_blank">Discord</a>
-    </div>
+  <!-- КНОПКИ -->
+  <a class="link" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">
+    ▶ YouTube
+  </a>
+
+  <a class="link" href="https://twitch.tv/ТУТ_ТВІЙ_TWITCH" target="_blank">
+    🎮 Twitch
+  </a>
+
+  <a class="link" href="https://discord.gg/ТУТ_ТВІЙ_ДІСКОРД" target="_blank">
+    💬 Discord
+  </a>
+
+  <div class="footer">
+    © 2026 KUTLAKSTER
   </div>
 
+</div>
 </body>
 </html>
