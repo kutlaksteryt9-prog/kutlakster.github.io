@@ -2,158 +2,147 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<title>KUTLAKSTER</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KUTLAKSTER</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  background:#040008;
-  font-family:Arial,sans-serif;
-  color:white;
-  overflow:hidden;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* CANVAS */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:-1;
+body {
+  background: radial-gradient(circle at top, #0b0016, #050008);
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* MENU */
-.menu{
-  position:fixed;
-  left:60px;
-  top:50%;
-  transform:translateY(-50%);
-}
-.btn{
-  display:block;
-  margin:18px 0;
-  padding:15px 34px;
-  border-radius:999px;
-  text-decoration:none;
-  font-size:18px;
-  color:white;
-  background:linear-gradient(45deg,#8a2be2,#00ff88);
-  box-shadow:0 0 25px rgba(138,43,226,.7);
-  transition:.35s;
-}
-.btn:hover{
-  transform:translateX(8px) scale(1.08);
-  box-shadow:0 0 45px #00ff88;
+/* === STAR BACKGROUND === */
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
 }
 
-/* MOBILE */
-.burger{
-  display:none;
-  position:fixed;
-  top:20px;
-  left:20px;
-  font-size:30px;
-  z-index:10;
-  cursor:pointer;
-}
-@media(max-width:800px){
-  .menu{display:none;left:20px;top:90px;transform:none}
-  .menu.active{display:block}
-  .burger{display:block}
+/* === CONTENT === */
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* CENTER TEXT */
-.center{
-  position:absolute;
-  right:10%;
-  top:50%;
-  transform:translateY(-50%);
-  text-align:left;
-}
-.center h1{
-  font-size:48px;
-  color:#c77dff;
-  letter-spacing:2px;
-  text-shadow:0 0 30px #8a2be2;
-}
-.center p{
-  margin-top:14px;
-  font-size:19px;
-  color:#00ff88;
-  opacity:.9;
+.panel {
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
 }
 
-/* BOTTOM LINE */
-.footer{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  height:5px;
-  background:linear-gradient(90deg,#8a2be2,#00ff88);
-  box-shadow:0 0 30px #00ff88;
+/* === TITLE === */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #b26cff;
+  text-shadow: 0 0 15px #b26cff;
+}
+
+.subtitle {
+  color: #6cff9c;
+  margin-bottom: 25px;
+}
+
+/* === BUTTONS === */
+.links a {
+  display: block;
+  margin: 12px 0;
+  padding: 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.3s;
+}
+
+.links a:hover {
+  background: rgba(178,108,255,0.25);
+  box-shadow: 0 0 15px #b26cff;
+  transform: scale(1.05);
+}
+
+/* === STATUS === */
+.status {
+  margin-top: 25px;
+  font-size: 0.95rem;
+  color: #aaa;
+}
+
+.status span {
+  display: block;
+  margin-top: 6px;
+  color: #6cff9c;
+}
+
+/* === MOBILE === */
+@media (max-width: 480px) {
+  h1 { font-size: 2rem; }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="bg"></canvas>
+<canvas id="stars"></canvas>
 
-<div class="burger" onclick="toggleMenu()">☰</div>
+<div class="container">
+  <div class="panel">
+    <h1>KUTLAKSTER</h1>
+    <div class="subtitle">Gaming • Streams • Community</div>
 
-<div class="menu" id="menu">
-  <a class="btn" href="https://discord.gg/8ccpg7c23F" target="_blank">Discord</a>
-  <a class="btn" href="https://www.twitch.tv/kutlakster1" target="_blank">Twitch</a>
-  <a class="btn" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">YouTube</a>
+    <div class="links">
+      <a href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">▶ YouTube</a>
+      <a href="https://discord.gg/8ccpg7c23F" target="_blank">💬 Discord</a>
+      <a href="https://www.twitch.tv/kutlakster1" target="_blank">🎮 Twitch</a>
+    </div>
+
+    <div class="status">
+      <span>🔴 Discord: зараз онлайн</span>
+      <span>▶ YouTube: активний канал</span>
+      <span>🎮 Twitch: стріми регулярно</span>
+    </div>
+  </div>
 </div>
-
-<div class="center">
-  <h1>KUTLAKSTER</h1>
-  <p>Neon • Gamer • Community</p>
-</div>
-
-<div class="footer"></div>
 
 <script>
-/* MENU */
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("active");
-}
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
 
-/* SPIRALS BACKGROUND */
-const c = document.getElementById("bg");
-const ctx = c.getContext("2d");
-let W,H,t=0;
-
-function resize(){
-  W=c.width=innerWidth;
-  H=c.height=innerHeight;
+let w, h;
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
 }
+window.addEventListener('resize', resize);
 resize();
-addEventListener("resize",resize);
 
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  t+=0.01;
+let mouse = { x: w / 2, y: h / 2 };
 
-  for(let i=0;i<8;i++){
-    ctx.beginPath();
-    for(let a=0;a<Math.PI*6;a+=0.05){
-      let r=40+a*18;
-      let x=W/2 + Math.cos(a+t+i)*r;
-      let y=H/2 + Math.sin(a+t+i)*r;
-      ctx.lineTo(x,y);
-    }
-    ctx.strokeStyle=i%2?"#8a2be2":"#00ff88";
-    ctx.lineWidth=2;
-    ctx.shadowBlur=20;
-    ctx.shadowColor=ctx.strokeStyle;
-    ctx.stroke();
-  }
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
 
-  requestAnimationFrame(draw);
-}
-draw();
-</script>
+const stars = Array.from({ length: 120 }, () => ({
+  x: Math.random() * w,
+  y: Math.random() * h,
+  r: Math.random() * 1.5 + 0.5,
+  dx: (Math.random() - 0.5) * 0.2,
+  dy: (Math.random() - 0.5) * 0.2
+}));
 
-</body>
-</html>
+func
