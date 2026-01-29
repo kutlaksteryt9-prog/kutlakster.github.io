@@ -14,8 +14,8 @@ body{
   overflow:hidden;
 }
 
-/* ЗІРКИ */
-canvas#stars{
+/* CANVAS */
+canvas{
   position:fixed;
   inset:0;
   z-index:-1;
@@ -26,7 +26,7 @@ canvas#stars{
   background:rgba(20,10,40,.5);
   backdrop-filter:blur(14px);
   border:1px solid rgba(255,255,255,.15);
-  box-shadow:0 0 30px #8a2be2;
+  box-shadow:0 0 35px #8a2be2;
 }
 
 /* МЕНЮ */
@@ -35,21 +35,23 @@ canvas#stars{
   left:40px;
   top:50%;
   transform:translateY(-50%);
+  padding:20px;
 }
 .btn{
   display:block;
   margin:14px 0;
-  padding:14px 28px;
-  border-radius:14px;
+  padding:14px 30px;
+  border-radius:16px;
   text-decoration:none;
   color:white;
+  font-size:18px;
   background:linear-gradient(45deg,#8a2be2,#00ff88);
   box-shadow:0 0 25px #8a2be2;
   transition:.3s;
 }
 .btn:hover{
-  transform:scale(1.1);
-  box-shadow:0 0 40px #00ff88;
+  transform:scale(1.12);
+  box-shadow:0 0 45px #00ff88;
 }
 
 /* МОБІЛКА */
@@ -58,7 +60,7 @@ canvas#stars{
   position:fixed;
   top:20px;
   left:20px;
-  font-size:28px;
+  font-size:30px;
   cursor:pointer;
   z-index:10;
 }
@@ -68,59 +70,41 @@ canvas#stars{
   .burger{display:block}
 }
 
-/* КОНТЕНТ */
+/* ТЕКСТ СПРАВА */
 .content{
   position:absolute;
   right:8%;
   top:50%;
   transform:translateY(-50%);
   text-align:center;
-  padding:25px;
-}
-.avatar{
-  width:160px;
-  height:160px;
-  border-radius:50%;
-  border:4px solid #00ff88;
-  box-shadow:0 0 35px #8a2be2;
+  padding:30px 40px;
 }
 h1{
-  margin:15px 0 10px;
-  font-size:36px;
+  font-size:42px;
   color:#c77dff;
+  text-shadow:0 0 25px #8a2be2;
 }
-.stats{
-  margin-top:10px;
+p{
+  margin-top:12px;
   color:#00ff88;
+  font-size:18px;
 }
 
-/* ЗМІЙКА */
-#snakeBox{
-  position:fixed;
-  right:40px;
-  bottom:40px;
-  padding:12px;
-}
-#snake{
-  background:black;
-  border:2px solid #00ff88;
-}
-
-/* НИЖНЯ ЛІНІЯ */
+/* НИЗ */
 .footer{
   position:fixed;
   bottom:0;
   width:100%;
   height:6px;
   background:linear-gradient(90deg,#8a2be2,#00ff88);
-  box-shadow:0 0 30px #00ff88;
+  box-shadow:0 0 35px #00ff88;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="stars"></canvas>
+<canvas id="bg"></canvas>
 
 <div class="burger" onclick="toggleMenu()">☰</div>
 
@@ -131,16 +115,8 @@ h1{
 </div>
 
 <div class="content glass">
-  <img class="avatar" src="https://yt3.googleusercontent.com/ytc/AIdro_k" alt="avatar">
   <h1>KUTLAKSTER</h1>
-  <div class="stats">
-    Discord: скоро онлайн<br>
-    YouTube: скоро підписники
-  </div>
-</div>
-
-<div id="snakeBox" class="glass">
-  <canvas id="snake" width="220" height="220"></canvas>
+  <p>Neon • Gamer • Community</p>
 </div>
 
 <div class="footer"></div>
@@ -151,51 +127,53 @@ function toggleMenu(){
   document.getElementById("menu").classList.toggle("active");
 }
 
-/* ЗІРКИ */
-const c=document.getElementById("stars"),ctx=c.getContext("2d");
-let W,H,stars=[],mx=0,my=0;
-function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
-resize();addEventListener("resize",resize);
-for(let i=0;i<140;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2});
-addEventListener("mousemove",e=>{
-  mx=(e.clientX-W/2)*0.03;
-  my=(e.clientY-H/2)*0.03;
-});
-(function anim(){
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle="white";
-  stars.forEach(s=>{
-    ctx.beginPath();
-    ctx.arc(s.x+mx,s.y+my,s.r,0,Math.PI*2);
-    ctx.fill();
-  });
-  requestAnimationFrame(anim);
-})();
+/* НЕОНОВІ ЗМІЙКИ */
+const c=document.getElementById("bg"),ctx=c.getContext("2d");
+let W,H,mouse={x:0,y:0},snakes=[];
 
-/* ЗМІЙКА */
-const sc=document.getElementById("snake"),s=sc.getContext("2d");
-let snake=[{x:100,y:100}],dx=20,dy=0,food={x:60,y:60};
-function game(){
-  s.fillStyle="#000";s.fillRect(0,0,220,220);
-  s.fillStyle="#00ff88";
-  snake.forEach(p=>s.fillRect(p.x,p.y,18,18));
-  s.fillStyle="#8a2be2";s.fillRect(food.x,food.y,18,18);
-  const h={x:snake[0].x+dx,y:snake[0].y+dy};
-  if(h.x==food.x&&h.y==food.y){
-    food={x:Math.floor(Math.random()*11)*20,y:Math.floor(Math.random()*11)*20};
-  }else snake.pop();
-  if(h.x<0||h.y<0||h.x>=220||h.y>=220||snake.some(p=>p.x==h.x&&p.y==h.y)){
-    snake=[{x:100,y:100}];dx=20;dy=0;
-  }
-  snake.unshift(h);
+function resize(){
+  W=c.width=innerWidth;
+  H=c.height=innerHeight;
 }
-setInterval(game,200);
-addEventListener("keydown",e=>{
-  if(e.key=="ArrowUp"){dx=0;dy=-20}
-  if(e.key=="ArrowDown"){dx=0;dy=20}
-  if(e.key=="ArrowLeft"){dx=-20;dy=0}
-  if(e.key=="ArrowRight"){dx=20;dy=0}
+resize();addEventListener("resize",resize);
+
+addEventListener("mousemove",e=>{
+  mouse.x=e.clientX;
+  mouse.y=e.clientY;
 });
+
+for(let i=0;i<8;i++){
+  snakes.push({
+    x:Math.random()*W,
+    y:Math.random()*H,
+    a:Math.random()*Math.PI*2,
+    l:80+Math.random()*120,
+    s:0.02+Math.random()*0.03
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  snakes.forEach(sn=>{
+    sn.a+=sn.s;
+    let px=sn.x,py=sn.y;
+    for(let i=0;i<sn.l;i++){
+      let nx=sn.x+Math.cos(sn.a+i*0.15)*i;
+      let ny=sn.y+Math.sin(sn.a+i*0.15)*i;
+      nx+=(mouse.x-W/2)*0.0005*i;
+      ny+=(mouse.y-H/2)*0.0005*i;
+      ctx.strokeStyle=i%2? "#00ff88":"#8a2be2";
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.moveTo(px,py);
+      ctx.lineTo(nx,ny);
+      ctx.stroke();
+      px=nx;py=ny;
+    }
+  });
+  requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
