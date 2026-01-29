@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,84 +10,94 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 body {
-  background: radial-gradient(circle at top, #0b0016, #050008);
-  color: #fff;
   height: 100vh;
+  background: radial-gradient(circle at top, #0b0016, #040007);
+  color: white;
   overflow: hidden;
 }
 
-/* ===== STARS ===== */
+/* ===== BACKGROUND STARS ===== */
 canvas {
   position: fixed;
   inset: 0;
   z-index: -1;
 }
 
-/* ===== LAYOUT ===== */
-.container {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.panel {
-  width: 360px;
+/* ===== HEADER ===== */
+.header {
   text-align: center;
+  padding-top: 30px;
 }
 
-/* ===== TEXT ===== */
-h1 {
-  font-size: 2.6rem;
+.header h1 {
+  font-size: 3rem;
   color: #b26cff;
-  text-shadow: 0 0 18px #b26cff;
+  text-shadow: 0 0 25px #b26cff;
 }
 
-.subtitle {
+.header p {
   color: #6cff9c;
-  margin: 10px 0 25px;
+  margin-top: 8px;
+}
+
+/* ===== LEFT PANEL ===== */
+.left-panel {
+  position: absolute;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 260px;
 }
 
 /* ===== BUTTONS ===== */
 .btn {
   display: block;
   width: 100%;
-  margin: 12px 0;
+  margin-bottom: 14px;
   padding: 14px;
   border-radius: 14px;
-  font-weight: bold;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(178,108,255,0.3);
+  color: white;
   text-decoration: none;
-  color: #fff;
-  background: rgba(255,255,255,0.07);
+  font-weight: bold;
+  text-align: center;
   backdrop-filter: blur(10px);
   transition: 0.3s;
 }
 
 .btn:hover {
-  box-shadow: 0 0 20px #b26cff;
-  transform: scale(1.05);
+  transform: scale(1.06);
+  box-shadow: 0 0 25px #b26cff;
 }
 
-/* ===== BIO ===== */
-.bio {
-  margin: 15px 0;
-  padding: 16px;
-  border-radius: 16px;
+/* ===== COUNTERS ===== */
+.counters {
+  margin-top: 20px;
+}
+
+.counter {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
   background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(178,108,255,0.3);
-  display: none;
+  border: 1px solid rgba(108,255,156,0.35);
+  text-align: center;
 }
 
-.bio p {
-  color: #ccc;
-  line-height: 1.5;
+.counter span {
+  display: block;
+  font-size: 1.5rem;
+  color: #6cff9c;
+  text-shadow: 0 0 12px #6cff9c;
+}
+
+.counter small {
+  color: #aaa;
 }
 </style>
 </head>
@@ -96,71 +106,77 @@ h1 {
 
 <canvas id="stars"></canvas>
 
-<div class="container">
-  <div class="panel">
+<!-- HEADER -->
+<div class="header">
+  <h1>KUTLAKSTER</h1>
+  <p>Neon • Gamer • Community</p>
+</div>
 
-    <h1>KUTLAKSTER</h1>
-    <div class="subtitle">Neon • Gaming • Community</div>
+<!-- LEFT PANEL -->
+<div class="left-panel">
 
-    <!-- MY BIO BUTTON -->
-    <button class="btn" onclick="toggleBio()">📂 My Bio</button>
+  <a class="btn" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">▶ YouTube</a>
+  <a class="btn" href="https://discord.gg/8ccpg7c23F" target="_blank">💬 Discord</a>
+  <a class="btn" href="https://www.twitch.tv/kutlakster1" target="_blank">🎮 Twitch</a>
 
-    <!-- BIO PANEL -->
-    <div class="bio" id="bio">
-      <p>
-        🎮 Gamer & streamer<br>
-        💜 Neon style enjoyer<br>
-        🚀 KUT community<br>
-        🔥 GitHub Pages
-      </p>
+  <!-- COUNTERS -->
+  <div class="counters">
+    <div class="counter">
+      <span id="subs">1240</span>
+      <small>Subscribers</small>
     </div>
-
-    <!-- LINKS -->
-    <a class="btn" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">▶ YouTube</a>
-    <a class="btn" href="https://discord.gg/8ccpg7c23F" target="_blank">💬 Discord</a>
-    <a class="btn" href="https://www.twitch.tv/kutlakster1" target="_blank">🎮 Twitch</a>
-
+    <div class="counter">
+      <span id="online">87</span>
+      <small>Discord Online</small>
+    </div>
   </div>
+
 </div>
 
 <script>
-function toggleBio() {
-  const bio = document.getElementById('bio');
-  bio.style.display = (bio.style.display === 'block') ? 'none' : 'block';
+/* ===== FAKE COUNTERS ===== */
+function roll(id, min, max, speed) {
+  let el = document.getElementById(id);
+  setInterval(() => {
+    let value = Math.floor(Math.random() * (max - min + 1)) + min;
+    el.textContent = value;
+  }, speed);
 }
 
+roll("subs", 1200, 1300, 1800);
+roll("online", 50, 120, 1300);
+
 /* ===== STARS ===== */
-const canvas = document.getElementById('stars');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
 
 function resize() {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
 }
 resize();
-addEventListener('resize', resize);
+addEventListener("resize", resize);
 
-const stars = Array.from({ length: 130 }, () => ({
+const stars = Array.from({ length: 140 }, () => ({
   x: Math.random() * canvas.width,
   y: Math.random() * canvas.height,
-  r: Math.random() * 1.4 + 0.5,
-  s: Math.random() * 0.4 + 0.1
+  r: Math.random() * 1.5 + 0.4,
+  s: Math.random() * 0.4 + 0.15
 }));
 
 function animate() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  for (const s of stars) {
+  for (let s of stars) {
     s.y += s.s;
     if (s.y > canvas.height) {
       s.y = 0;
       s.x = Math.random() * canvas.width;
     }
     ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-    ctx.fillStyle = '#b26cff';
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = "#b26cff";
     ctx.shadowBlur = 10;
-    ctx.shadowColor = '#6cff9c';
+    ctx.shadowColor = "#6cff9c";
     ctx.fill();
   }
   requestAnimationFrame(animate);
