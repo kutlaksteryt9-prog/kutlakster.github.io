@@ -8,28 +8,28 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-  font-family:Arial,sans-serif;
   background:#05010a;
+  font-family:Arial,sans-serif;
   color:white;
   overflow:hidden;
 }
 
-/* CANVAS */
+/* canvas */
 canvas{
   position:fixed;
   inset:0;
   z-index:-1;
 }
 
-/* GLASS + НЕОН */
+/* glass */
 .glass{
-  background:rgba(20,10,40,.5);
-  backdrop-filter:blur(14px);
+  background:rgba(25,15,45,.55);
+  backdrop-filter:blur(16px);
   border:1px solid rgba(255,255,255,.15);
-  box-shadow:0 0 35px #8a2be2;
+  box-shadow:0 0 40px #8a2be2;
 }
 
-/* МЕНЮ */
+/* menu */
 .menu{
   position:fixed;
   left:40px;
@@ -40,29 +40,29 @@ canvas{
 .btn{
   display:block;
   margin:14px 0;
-  padding:14px 30px;
-  border-radius:16px;
+  padding:14px 32px;
+  border-radius:18px;
   text-decoration:none;
   color:white;
   font-size:18px;
   background:linear-gradient(45deg,#8a2be2,#00ff88);
-  box-shadow:0 0 25px #8a2be2;
+  box-shadow:0 0 30px #8a2be2;
   transition:.3s;
 }
 .btn:hover{
-  transform:scale(1.12);
-  box-shadow:0 0 45px #00ff88;
+  transform:scale(1.15);
+  box-shadow:0 0 50px #00ff88;
 }
 
-/* МОБІЛКА */
+/* mobile */
 .burger{
   display:none;
   position:fixed;
   top:20px;
   left:20px;
   font-size:30px;
-  cursor:pointer;
   z-index:10;
+  cursor:pointer;
 }
 @media(max-width:800px){
   .menu{display:none;left:20px;top:80px;transform:none}
@@ -70,27 +70,27 @@ canvas{
   .burger{display:block}
 }
 
-/* ТЕКСТ СПРАВА */
-.content{
+/* title */
+.center{
   position:absolute;
   right:8%;
   top:50%;
   transform:translateY(-50%);
+  padding:35px 45px;
   text-align:center;
-  padding:30px 40px;
 }
-h1{
-  font-size:42px;
+.center h1{
+  font-size:44px;
   color:#c77dff;
-  text-shadow:0 0 25px #8a2be2;
+  text-shadow:0 0 30px #8a2be2;
 }
-p{
-  margin-top:12px;
+.center p{
+  margin-top:10px;
   color:#00ff88;
   font-size:18px;
 }
 
-/* НИЗ */
+/* footer line */
 .footer{
   position:fixed;
   bottom:0;
@@ -104,9 +104,9 @@ p{
 
 <body>
 
-<canvas id="bg"></canvas>
+<canvas id="fx"></canvas>
 
-<div class="burger" onclick="toggleMenu()">☰</div>
+<div class="burger" onclick="menu()">☰</div>
 
 <div class="menu glass" id="menu">
   <a class="btn" href="https://discord.gg/8ccpg7c23F" target="_blank">Discord</a>
@@ -114,22 +114,22 @@ p{
   <a class="btn" href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">YouTube</a>
 </div>
 
-<div class="content glass">
+<div class="center glass">
   <h1>KUTLAKSTER</h1>
-  <p>Neon • Gamer • Community</p>
+  <p>Neon gamer community</p>
 </div>
 
 <div class="footer"></div>
 
 <script>
-/* МЕНЮ */
-function toggleMenu(){
+/* menu */
+function menu(){
   document.getElementById("menu").classList.toggle("active");
 }
 
-/* НЕОНОВІ ЗМІЙКИ */
-const c=document.getElementById("bg"),ctx=c.getContext("2d");
-let W,H,mouse={x:0,y:0},snakes=[];
+/* neon snakes */
+const c=document.getElementById("fx"),x=c.getContext("2d");
+let W,H,mouse={x:0,y:0},lines=[];
 
 function resize(){
   W=c.width=innerWidth;
@@ -142,32 +142,32 @@ addEventListener("mousemove",e=>{
   mouse.y=e.clientY;
 });
 
-for(let i=0;i<8;i++){
-  snakes.push({
+for(let i=0;i<10;i++){
+  lines.push({
     x:Math.random()*W,
     y:Math.random()*H,
-    a:Math.random()*Math.PI*2,
-    l:80+Math.random()*120,
-    s:0.02+Math.random()*0.03
+    a:Math.random()*6.28,
+    s:0.015+Math.random()*0.02,
+    l:120+Math.random()*100
   });
 }
 
 function draw(){
-  ctx.clearRect(0,0,W,H);
-  snakes.forEach(sn=>{
-    sn.a+=sn.s;
-    let px=sn.x,py=sn.y;
-    for(let i=0;i<sn.l;i++){
-      let nx=sn.x+Math.cos(sn.a+i*0.15)*i;
-      let ny=sn.y+Math.sin(sn.a+i*0.15)*i;
-      nx+=(mouse.x-W/2)*0.0005*i;
-      ny+=(mouse.y-H/2)*0.0005*i;
-      ctx.strokeStyle=i%2? "#00ff88":"#8a2be2";
-      ctx.lineWidth=2;
-      ctx.beginPath();
-      ctx.moveTo(px,py);
-      ctx.lineTo(nx,ny);
-      ctx.stroke();
+  x.clearRect(0,0,W,H);
+  lines.forEach(l=>{
+    l.a+=l.s;
+    let px=l.x,py=l.y;
+    for(let i=0;i<l.l;i++){
+      let nx=l.x+Math.cos(l.a+i*0.12)*i;
+      let ny=l.y+Math.sin(l.a+i*0.12)*i;
+      nx+=(mouse.x-W/2)*0.0004*i;
+      ny+=(mouse.y-H/2)*0.0004*i;
+      x.strokeStyle=i%2?"#00ff88":"#8a2be2";
+      x.lineWidth=2;
+      x.beginPath();
+      x.moveTo(px,py);
+      x.lineTo(nx,ny);
+      x.stroke();
       px=nx;py=ny;
     }
   });
