@@ -5,13 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KUTLAKSTER</title>
 
+<!-- ICONS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, Helvetica, sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 
 body{
   background:#050008;
@@ -19,64 +17,72 @@ body{
   overflow-x:hidden;
 }
 
-/* ===== STAR BACKGROUND ===== */
+/* ===== STARS ===== */
 canvas{
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset:0;
   z-index:-1;
 }
 
 /* ===== MENU BUTTON ===== */
 .menu-btn{
-  position:absolute;
+  position:fixed;
   top:20px;
   left:20px;
-  padding:10px 16px;
+  padding:12px 18px;
+  border-radius:14px;
   background:rgba(140,90,255,.15);
   border:1px solid #9f6cff;
-  border-radius:12px;
   color:#fff;
   cursor:pointer;
   backdrop-filter:blur(10px);
-  box-shadow:0 0 12px #9f6cff;
+  box-shadow:0 0 14px #9f6cff;
+  z-index:20;
 }
 
-/* ===== TOP MENU ===== */
+/* ===== MENU PANEL ===== */
 .menu{
   position:fixed;
-  top:-100%;
+  top:0;
   left:0;
   width:100%;
-  padding:30px;
-  background:rgba(10,5,20,.92);
-  backdrop-filter:blur(20px);
-  transition:.4s;
-  z-index:10;
-  text-align:center;
+  height:100%;
+  background:rgba(5,0,10,.94);
+  backdrop-filter:blur(25px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.35s;
+  z-index:15;
 }
 
 .menu.active{
-  top:0;
+  opacity:1;
+  pointer-events:auto;
 }
 
-.menu h2{
+.menu-box{
+  max-width:520px;
+  text-align:center;
+  padding:30px;
+}
+
+.menu-box h2{
   color:#9f6cff;
+  font-size:2rem;
   margin-bottom:10px;
 }
 
-.menu p{
+.menu-box p{
   color:#6cff9c;
-  max-width:500px;
-  margin:0 auto;
-  line-height:1.5;
+  line-height:1.6;
 }
 
 /* ===== HEADER ===== */
 .header{
-  padding-top:100px;
+  padding-top:120px;
   text-align:center;
 }
 
@@ -86,50 +92,58 @@ canvas{
   text-shadow:0 0 20px #9f6cff;
 }
 
-.header span{
-  color:#6cff9c;
-}
+.header span{color:#6cff9c}
 
-/* ===== LEFT BUTTONS ===== */
+/* ===== BUTTONS ===== */
 .buttons{
   position:fixed;
   left:20px;
-  bottom:120px;
+  bottom:150px;
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:18px;
 }
 
 .buttons a{
-  padding:16px 28px;
-  border-radius:30px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 30px;
+  border-radius:40px;
   background:linear-gradient(135deg,#9f6cff,#6cff9c);
   color:#000;
   font-weight:bold;
   text-decoration:none;
-  box-shadow:0 0 20px rgba(140,90,255,.6);
+  font-size:1.1rem;
+  box-shadow:0 0 22px rgba(140,90,255,.6);
   transition:.25s;
 }
 
-.buttons a:hover{
-  transform:scale(1.08);
-}
+.buttons a:hover{transform:scale(1.08)}
 
 /* ===== COUNTERS ===== */
 .counters{
   position:fixed;
   left:20px;
-  bottom:20px;
+  bottom:30px;
   display:flex;
   flex-direction:column;
-  gap:6px;
+  gap:10px;
 }
 
 .counter{
+  display:flex;
+  align-items:center;
+  gap:10px;
   font-size:1rem;
   color:#6cff9c;
   text-shadow:0 0 8px #6cff9c;
-  letter-spacing:1px;
+}
+
+.counter span{
+  min-width:70px;
+  display:inline-block;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -138,15 +152,17 @@ canvas{
 
 <canvas id="stars"></canvas>
 
-<button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰ Menu</button>
 
 <div class="menu" id="menu">
-  <h2>My Bio</h2>
-  <p>
-    Gamer & creator.  
-    Люблю неон, мінімалізм і технології.  
-    Це мій GitHub Pages сайт.
-  </p>
+  <div class="menu-box">
+    <h2>My Bio</h2>
+    <p>
+      Gamer & creator.<br>
+      Неон • мінімалізм • комʼюніті.<br>
+      GitHub Pages проект KUTLAKSTER.
+    </p>
+  </div>
 </div>
 
 <div class="header">
@@ -154,70 +170,59 @@ canvas{
 </div>
 
 <div class="buttons">
-  <a href="https://discord.gg/8ccpg7c23F" target="_blank">Discord</a>
-  <a href="https://www.twitch.tv/kutlakster1" target="_blank">Twitch</a>
-  <a href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">YouTube</a>
+  <a href="https://discord.gg/8ccpg7c23F" target="_blank">
+    <i class="fa-brands fa-discord"></i> Discord
+  </a>
+  <a href="https://www.twitch.tv/kutlakster1" target="_blank">
+    <i class="fa-brands fa-twitch"></i> Twitch
+  </a>
+  <a href="https://www.youtube.com/channel/UClauPVBuIDO3y6mqWedCgGw" target="_blank">
+    <i class="fa-brands fa-youtube"></i> YouTube
+  </a>
 </div>
 
 <div class="counters">
-  <div class="counter" id="c1">Discord: 0</div>
-  <div class="counter" id="c2">Twitch: 0</div>
-  <div class="counter" id="c3">YouTube: 0</div>
+  <div class="counter"><i class="fa-solid fa-users"></i> <span id="d">000</span> Discord</div>
+  <div class="counter"><i class="fa-solid fa-eye"></i> <span id="t">000</span> Twitch</div>
+  <div class="counter"><i class="fa-solid fa-play"></i> <span id="y">000</span> YouTube</div>
 </div>
 
 <script>
-/* ===== MENU ===== */
+/* ===== MENU TOGGLE ===== */
+let open=false;
 function toggleMenu(){
-  document.getElementById("menu").classList.toggle("active");
+  open=!open;
+  document.getElementById("menu").classList.toggle("active",open);
+  document.getElementById("menuBtn").textContent=open?"✕ Close":"☰ Menu";
 }
 
 /* ===== COUNTERS ===== */
-function fakeCounter(id,start){
-  let val=start;
+function roll(id,start){
+  let v=start;
   setInterval(()=>{
-    val+=Math.floor(Math.random()*3);
-    document.getElementById(id).textContent =
-      document.getElementById(id).textContent.split(":")[0]+": "+val+"+";
+    v+=Math.floor(Math.random()*4);
+    document.getElementById(id).textContent=v.toString().padStart(3,"0");
   },120);
 }
-fakeCounter("c1",120);
-fakeCounter("c2",80);
-fakeCounter("c3",150);
+roll("d",120);
+roll("t",85);
+roll("y",160);
 
 /* ===== STARS ===== */
-const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d");
-let w,h,stars=[];
-
-function resize(){
-  w=canvas.width=window.innerWidth;
-  h=canvas.height=window.innerHeight;
-}
-window.onresize=resize;
-resize();
-
-for(let i=0;i<120;i++){
-  stars.push({
-    x:Math.random()*w,
-    y:Math.random()*h,
-    r:Math.random()*1.5+0.5,
-    s:Math.random()*0.3+0.1
-  });
-}
-
-function draw(){
-  ctx.clearRect(0,0,w,h);
-  ctx.fillStyle="#9f6cff";
-  stars.forEach(s=>{
-    s.y+=s.s;
-    if(s.y>h) s.y=0;
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fill();
+const c=document.getElementById("stars"),x=c.getContext("2d");
+let w,h,s=[];
+function rs(){w=c.width=innerWidth;h=c.height=innerHeight}
+onresize=rs;rs();
+for(let i=0;i<130;i++)s.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5+.5,v:Math.random()*.3+.1});
+(function draw(){
+  x.clearRect(0,0,w,h);
+  x.fillStyle="#9f6cff";
+  s.forEach(a=>{
+    a.y+=a.v;if(a.y>h)a.y=0;
+    x.beginPath();x.arc(a.x,a.y,a.r,0,7);x.fill();
   });
   requestAnimationFrame(draw);
-}
-draw();
+})();
 </script>
 
 </body>
